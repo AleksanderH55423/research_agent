@@ -1,7 +1,12 @@
-Problem Framing & Assumptions
+# AI researcher
+
+
+## Problem Framing & Assumptions
+
     The goal of this project is to design an AI research agent that can take an open-ended question and produce a structured, evidence-backed report. The focus is not on producing a single best answer, but on demonstrating how an agent can plan, gather information, and synthesize results using external tools.
 
-Overview
+## Overview
+
     In this project, I have implemented a tool-using AI research agent designed to transform an open-ended user prompt into a structured report. This system focuses on grounded reasoning, where the agent does not rely solely on internal model knowledge, but actively searches for and retrieves external sources and analyzes them before generating conclusions.
 
     Given a natural language prompt, the agent is able to perform this process:
@@ -36,7 +41,7 @@ Overview
     Markdown Research Report
 
 
-Agent Loop Design
+## Agent Loop Design
 
     The core of this system is the iterative search loop, alternating between reasoning and tool use. Rather than producing a report in a single model call, the agent follows the following cycle:
 
@@ -66,7 +71,8 @@ Agent Loop Design
     This loop demonstrates a reasoning->action->observation->memory pattern.
 
 
-Data & Trace Model
+## Data & Trace Model
+
     The system uses structured intermediate representations rather than free-form text to maintain transparency and traceability.
 
     Each piece of extracted evidence follows this schema:
@@ -92,7 +98,8 @@ To evaluate the performance of the research agent, the following metrics are use
 
 
 
-Reliability & Safety Considerations
+## Reliability & Safety Considerations
+
     During testing, the agent encountered real-world issues such as:
         - HTTP  errors from websites blocking automated scraping
         - Pages with low-quality or irrelevant content
@@ -106,12 +113,14 @@ Reliability & Safety Considerations
 
     These measures demonstrated the need for resilience when building tool-using agents in open web environments.
 
-Tradeoffs
+## Tradeoffs
+
    - Depth vs. Cost: More iterations increase coverage but raise API usage
     - Simplicity vs. Autonomy: A fixed loop is stable while a self-reflecting agent is more powerful but complex
     - Scraping vs API retrieval: Scraping increases coverage but reduces reliability
 
-Future System
+## Future System
+
     With more time, the system could evolve into:
         - A multi-agent architecture
         - Citation validation and fact-checking modules
@@ -119,7 +128,8 @@ Future System
         - Source credibility scoring
         - Asynchronous task execution
 
-Proof-of-Concept Implementation
+## Proof-of-Concept Implementation
+
     The provided code implements a minimal working agent with:
      - A planning LLM
      - A web search tool
