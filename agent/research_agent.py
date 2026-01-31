@@ -1,13 +1,15 @@
-from planner import create_research_plan
-from search_tool import search_web
-from retriever import fetch_page_text
-from extractor import extract_evidence
-from openai import OpenAI
 import os
 from dotenv import load_dotenv
+from openai import OpenAI
+
+from agent.planner import create_research_plan
+from agent.search_tool import search_web
+from agent.retriever import fetch_page_text
+from agent.extractor import extract_evidence
 
 load_dotenv(override=True)
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 
 
 # Actually running  the research agent
@@ -99,7 +101,8 @@ if __name__ == "__main__":
     print("\nGenerating Markdown report...")
     report = generate_markdown_report(question, evidence_db)
 
-    with open("research_report.md", "w", encoding="utf-8") as f:
+    os.makedirs("reports", exist_ok=True)
+    with open("reports/research_report.md", "w", encoding="utf-8") as f:
         f.write(report)
 
     print("Report saved to research_report.md")
