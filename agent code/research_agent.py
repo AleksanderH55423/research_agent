@@ -2,6 +2,13 @@ from planner import create_research_plan
 from search_tool import search_web
 from retriever import fetch_page_text
 from extractor import extract_evidence
+from openai import OpenAI
+import os
+from dotenv import load_dotenv
+
+load_dotenv(override=True)
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 
 # Actually running  the research agent
 def run_research_agent(user_question: str, max_tasks: int = 3):
@@ -44,10 +51,6 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
 def generate_markdown_report(user_question: str, evidence_db):
-    """
-    Uses an LLM to convert structured evidence into a Markdown research report.
-    """
-
     evidence_text = "\n".join([
         f"TASK: {e['task']}\nSOURCE: {e['source']}\nEVIDENCE: {e['evidence']}\n"
         for e in evidence_db
@@ -83,17 +86,20 @@ EVIDENCE:
         messages=[{"role": "user", "content": prompt}],
         temperature=0.3
     )
-
     return response.choices[0].message.content
+
 
 
 
 if __name__ == "__main__":
     question = "What are the real-world risks and benefits of using synthetic data to train large language models?"
-    results = run_research_agent(question)
 
-    print("\n=== FINAL EVIDENCE DATABASE ===")
-    for e in results:
-        print("\nTASK:", e["task"])
-        print("SOURCE:", e["source"])
-        print("EVIDENCE:", e["evidence"])
+    evidence_db = run_research_agent(question)
+
+    print("\nGenerating Markdown report...")
+    report = generate_markdown_report(question, evidence_db)
+
+    with open("research_report.md", "w", encoding="utf-8") as f:
+        f.write(report)
+
+    print("Report saved to research_report.md")
